@@ -268,8 +268,8 @@ const App: React.FC = () => {
                   onClick={() => setIsPreviewOpen(true)}
                 />
 
-                {/* Desktop Actions Overlay */}
-                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 flex items-center justify-center gap-4">
+                {/* Desktop Actions Overlay - Always Visible */}
+                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent opacity-100 transition-opacity duration-300 z-20 flex items-center justify-center gap-4">
                   <a
                     href={result.imageUrl}
                     download="tet-jewelry-portrait.png"

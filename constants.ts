@@ -15,7 +15,6 @@ export const BACKGROUND_THEMES: BackgroundTheme[] = [
     description:
       "Background is the Imperial City of Hue (Dai Noi). Majestic red wooden pillars with gold dragon engravings, traditional royal architecture, regal and sophisticated atmosphere, soft natural light.",
   },
-
   {
     id: "dalat_cherry",
     label: "Đà Lạt Hoa Anh Đào",

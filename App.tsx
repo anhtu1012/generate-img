@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Analytics } from "@vercel/analytics/react";
 import { ImageUploader } from "./components/ImageUploader";
 import { BackgroundSelector } from "./components/BackgroundSelector";
 import { TetDecoration } from "./components/TetDecoration";
@@ -110,6 +111,7 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-tet-red to-[#550000] text-tet-black font-sans relative selection:bg-tet-gold selection:text-tet-red pb-20 md:pb-8 overflow-x-hidden">
+      <Analytics />
       <TetDecoration />
 
       {/* Show Full Screen Loading if generating */}

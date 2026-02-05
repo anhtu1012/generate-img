@@ -2,6 +2,13 @@ import { BackgroundTheme } from "./types";
 
 export const BACKGROUND_THEMES: BackgroundTheme[] = [
   {
+    id: "original_bg",
+    label: "Background Gốc",
+    icon: "🏠",
+    description:
+      "Keep the original background from Image 1 exactly as is. Do not change the environment, lighting, or atmosphere. Maintain the original scene completely.",
+  },
+  {
     id: "studio_luxury",
     label: "Studio Sang Trọng",
     icon: "✨",
@@ -161,22 +168,13 @@ Before finalizing the image, verify:
 ✓ Are ALL facial features identical?
 If ANY answer is NO, you FAILED the task.
 
-JEWELRY PLACEMENT:
-- The jewelry from Image 2 must be worn naturally by the person.
-- Necklaces: Drape naturally around the neck, respecting gravity and collarbones.
-- Earrings: Hang naturally from the earlobes.
-- Bracelets/Rings: Fit naturally on the wrist/fingers.
-- Materials (Gold, Jade, Diamond) must look realistic with proper reflections.
-
-BACKGROUND & ATMOSPHERE:
-Background is a Vietnamese Lunar New Year (Tet holiday) theme:
-red and gold decorations, apricot blossoms (hoa mai) or peach blossoms (hoa đào),
-traditional lanterns, festive warm lighting, elegant and joyful atmosphere.
+JEWELRY PLACEMENT (Image 2):
+- Wear jewelry naturally: necklaces drape on neck, earrings hang from ears
+- Realistic materials with proper reflections (Gold, Jade, Diamond)
 
 STYLE:
-Professional studio photography, ultra realistic,
-sharp focus, soft shadows, cinematic lighting,
-4K resolution, commercial jewelry advertising style.
+Professional studio photography, ultra realistic, sharp focus, soft shadows,
+cinematic lighting, commercial jewelry style, warm red/gold tones, natural radiance.
 Traditional Vietnamese Tet atmosphere,
 ao dai style elegance (if clothes are visible, prefer traditional or elegant formal wear),
 warm red and gold tones,
@@ -280,12 +278,6 @@ BACKGROUND CHANGE:
 - The background should blend naturally with the person's lighting.
 - Maintain realistic depth of field and natural perspective.
 - Background should complement but not overpower the person.
-
-BACKGROUND & ATMOSPHERE:
-Vietnamese Lunar New Year (Tet holiday) theme:
-red and gold decorations, apricot blossoms (hoa mai) or peach blossoms (hoa đào),
-traditional lanterns, festive warm lighting, elegant and joyful atmosphere,
-natural outdoor or indoor Vietnamese scenery.
 
 STYLE:
 Professional photography, ultra realistic,

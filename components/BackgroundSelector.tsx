@@ -1,15 +1,17 @@
 import React from "react";
-import { BackgroundTheme } from "../types";
+import { BackgroundTheme, AppMode } from "../types";
 import { BACKGROUND_THEMES } from "../constants";
 
 interface BackgroundSelectorProps {
   selectedThemeId: string;
   onSelect: (theme: BackgroundTheme) => void;
+  mode: AppMode;
 }
 
 export const BackgroundSelector: React.FC<BackgroundSelectorProps> = ({
   selectedThemeId,
   onSelect,
+  mode,
 }) => {
   return (
     <div className="w-full">
@@ -18,7 +20,7 @@ export const BackgroundSelector: React.FC<BackgroundSelectorProps> = ({
           2
         </span>
         <span className="text-transparent bg-clip-text bg-gradient-to-r from-tet-red to-red-800 uppercase tracking-wide text-sm md:text-base">
-          Chọn Không Gian Tết
+          {mode === "jewelry" ? "Chọn Không Gian Tết" : "Chọn Background Tết"}
         </span>
       </label>
 

@@ -4,8 +4,16 @@ import { BackgroundSelector } from "./components/BackgroundSelector";
 import { TetDecoration } from "./components/TetDecoration";
 import { TetLoading } from "./components/TetLoading";
 import { ImagePreviewModal } from "./components/ImagePreviewModal";
-import { generateTetImage } from "./services/geminiService";
-import { ImageUploadState, GenerationResult, BackgroundTheme } from "./types";
+import {
+  generateTetImage,
+  generateBackgroundChange,
+} from "./services/geminiService";
+import {
+  ImageUploadState,
+  GenerationResult,
+  BackgroundTheme,
+  AppMode,
+} from "./types";
 import { BACKGROUND_THEMES } from "./constants";
 
 const INITIAL_IMAGE_STATE: ImageUploadState = {
@@ -24,6 +32,7 @@ const App: React.FC = () => {
   const [selectedTheme, setSelectedTheme] = useState<BackgroundTheme>(
     BACKGROUND_THEMES[0],
   );
+  const [mode, setMode] = useState<AppMode>("jewelry");
 
   // Output State
   const [result, setResult] = useState<GenerationResult>({
@@ -35,21 +44,46 @@ const App: React.FC = () => {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
   const handleGenerate = async () => {
-    if (!personImage.base64 || !jewelryImage.base64) {
-      setResult((prev) => ({ ...prev, error: "Vui lòng tải lên cả 2 ảnh." }));
-      return;
+    // Validation based on mode
+    if (mode === "jewelry") {
+      if (!personImage.base64 || !jewelryImage.base64) {
+        setResult((prev) => ({
+          ...prev,
+          error: "Vui lòng tải lên cả 2 ảnh.",
+        }));
+        return;
+      }
+    } else {
+      if (!personImage.base64) {
+        setResult((prev) => ({
+          ...prev,
+          error: "Vui lòng tải lên ảnh của bạn.",
+        }));
+        return;
+      }
     }
 
     setResult({ imageUrl: null, loading: true, error: null });
 
     try {
-      const generatedImageUrl = await generateTetImage(
-        personImage.base64,
-        personImage.mimeType,
-        jewelryImage.base64,
-        jewelryImage.mimeType,
-        selectedTheme.description,
-      );
+      let generatedImageUrl: string;
+
+      if (mode === "jewelry") {
+        generatedImageUrl = await generateTetImage(
+          personImage.base64,
+          personImage.mimeType,
+          jewelryImage.base64!,
+          jewelryImage.mimeType,
+          selectedTheme.description,
+        );
+      } else {
+        generatedImageUrl = await generateBackgroundChange(
+          personImage.base64,
+          personImage.mimeType,
+          selectedTheme.description,
+        );
+      }
+
       setResult({ imageUrl: generatedImageUrl, loading: false, error: null });
     } catch (error: any) {
       setResult({
@@ -70,7 +104,9 @@ const App: React.FC = () => {
   }, [result.imageUrl, result.loading]);
 
   const isFormValid =
-    personImage.base64 && jewelryImage.base64 && !result.loading;
+    mode === "jewelry"
+      ? personImage.base64 && jewelryImage.base64 && !result.loading
+      : personImage.base64 && !result.loading;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-tet-red to-[#550000] text-tet-black font-sans relative selection:bg-tet-gold selection:text-tet-red pb-20 md:pb-8 overflow-x-hidden">
@@ -107,6 +143,45 @@ const App: React.FC = () => {
         <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 items-start">
           {/* Left Column: Inputs */}
           <div className="w-full lg:w-5/12 space-y-3 md:space-y-6 animate-fade-in-up">
+            {/* Mode Toggle */}
+            <div className="bg-white/90 backdrop-blur-lg rounded-2xl md:rounded-3xl shadow-xl border border-white/50 p-4 md:p-5 relative overflow-hidden">
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex-1">
+                  <h3 className="text-sm md:text-base font-serif font-bold text-tet-red mb-1">
+                    Chế Độ
+                  </h3>
+                  <p className="text-[10px] md:text-xs text-gray-600">
+                    {mode === "jewelry"
+                      ? "Ướm trang sức với AI"
+                      : "Đổi background khung cảnh Tết"}
+                  </p>
+                </div>
+                <button
+                  onClick={() =>
+                    setMode(mode === "jewelry" ? "background" : "jewelry")
+                  }
+                  className="relative inline-flex h-8 md:h-9 w-16 md:w-20 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-tet-gold focus:ring-offset-2"
+                  style={{
+                    backgroundColor: mode === "jewelry" ? "#D4AF37" : "#10B981",
+                  }}
+                >
+                  <span
+                    className="inline-block h-6 md:h-7 w-6 md:w-7 transform rounded-full bg-white shadow-lg transition-transform"
+                    style={{
+                      transform:
+                        mode === "jewelry"
+                          ? "translateX(4px)"
+                          : "translateX(36px)",
+                    }}
+                  >
+                    <span className="flex items-center justify-center h-full text-xs md:text-sm">
+                      {mode === "jewelry" ? "💍" : "🖼️"}
+                    </span>
+                  </span>
+                </button>
+              </div>
+            </div>
+
             {/* Step 1 & 2: Uploads */}
             <div className="bg-white/90 backdrop-blur-lg rounded-2xl md:rounded-3xl shadow-xl border border-white/50 p-4 md:p-6 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-16 md:w-20 h-16 md:h-20 bg-tet-gold/10 rounded-bl-full pointer-events-none"></div>
@@ -118,29 +193,40 @@ const App: React.FC = () => {
                 Tải Ảnh Lên
               </h2>
 
-              <div className="grid grid-cols-2 gap-2.5 md:gap-4">
+              <div
+                className={`grid gap-2.5 md:gap-4 ${
+                  mode === "jewelry" ? "grid-cols-2" : "grid-cols-1"
+                }`}
+              >
                 <ImageUploader
                   id="person-upload"
-                  label="Ảnh Của Bạn"
+                  label={
+                    mode === "jewelry"
+                      ? "Ảnh Của Bạn"
+                      : "Ảnh Cần Đổi Background"
+                  }
                   imageState={personImage}
                   onImageChange={setPersonImage}
                   required
                 />
-                <ImageUploader
-                  id="jewelry-upload"
-                  label="Trang Sức"
-                  imageState={jewelryImage}
-                  onImageChange={setJewelryImage}
-                  required
-                />
+                {mode === "jewelry" && (
+                  <ImageUploader
+                    id="jewelry-upload"
+                    label="Trang Sức"
+                    imageState={jewelryImage}
+                    onImageChange={setJewelryImage}
+                    required
+                  />
+                )}
               </div>
             </div>
 
-            {/* Step 3: Background */}
+            {/* Step 2: Background */}
             <div className="bg-white/90 backdrop-blur-lg rounded-2xl md:rounded-3xl shadow-xl border border-white/50 p-4 md:p-6">
               <BackgroundSelector
                 selectedThemeId={selectedTheme.id}
                 onSelect={setSelectedTheme}
+                mode={mode}
               />
             </div>
 
@@ -158,7 +244,11 @@ const App: React.FC = () => {
                     }
                   `}
               >
-                {result.loading ? "Đang Xử Lý..." : "✨ Tạo Ảnh Tết Ngay"}
+                {result.loading
+                  ? "Đang Xử Lý..."
+                  : mode === "jewelry"
+                    ? "✨ Tạo Ảnh Tết Ngay"
+                    : "🖼️ Đổi Background Ngay"}
               </button>
             </div>
           </div>

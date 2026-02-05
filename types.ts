@@ -17,3 +17,5 @@ export interface BackgroundTheme {
   icon: string;
   description: string;
 }
+
+export type AppMode = "jewelry" | "background";

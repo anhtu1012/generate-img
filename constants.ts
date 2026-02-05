@@ -15,6 +15,14 @@ export const BACKGROUND_THEMES: BackgroundTheme[] = [
     description:
       "Background is the Imperial City of Hue (Dai Noi). Majestic red wooden pillars with gold dragon engravings, traditional royal architecture, regal and sophisticated atmosphere, soft natural light.",
   },
+
+  {
+    id: "dalat_cherry",
+    label: "Đà Lạt Hoa Anh Đào",
+    icon: "🌸",
+    description:
+      "Background is Da Lat city with blooming cherry blossoms (hoa anh đào). Pink cherry blossom trees in full bloom, romantic European-style villas in the distance, cool highland atmosphere, soft natural lighting, spring flowers everywhere.",
+  },
   {
     id: "fireworks_night",
     label: "Đêm Giao Thừa",
@@ -98,13 +106,6 @@ export const BACKGROUND_THEMES: BackgroundTheme[] = [
     icon: "⛩️",
     description:
       "Background is the exterior courtyard of a traditional Vietnamese pagoda. Ancient architecture with curved roofs, incense smoke drifting, stone pathways, bonsai trees, natural lighting, serene spiritual atmosphere.",
-  },
-  {
-    id: "dalat_cherry",
-    label: "Đà Lạt Hoa Anh Đào",
-    icon: "🌸",
-    description:
-      "Background is Da Lat city with blooming cherry blossoms (hoa anh đào). Pink cherry blossom trees in full bloom, romantic European-style villas in the distance, cool highland atmosphere, soft natural lighting, spring flowers everywhere.",
   },
 ];
 

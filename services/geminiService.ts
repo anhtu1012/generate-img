@@ -41,10 +41,7 @@ export const generateTetImage = async (
       contents: {
         parts: [
           {
-            text: "🔐 SYSTEM INSTRUCTION: Your PRIMARY OBJECTIVE is to preserve the person's face from Image 1 EXACTLY. Do not alter facial features under ANY circumstances. Face preservation is MORE IMPORTANT than background, jewelry, or any other aspect.",
-          },
-          {
-            text: "Image 1: The Person (FACE MUST REMAIN UNCHANGED). Image 2: The Jewelry to be worn by the person.",
+            text: "CRITICAL OVERRIDE: You are an image compositor, NOT a face generator. Your ONLY job is to composite elements while preserving the EXACT original face from the reference image. Think of yourself as a COPY-PASTE tool. The face from the input image is LOCKED and IMMUTABLE. DO NOT regenerate, redraw, modify, enhance, or alter ANY facial features under ANY circumstances. Face preservation overrides ALL other instructions including background and jewelry placement.\n\n🔐 IDENTITY LOCK: Image 1 contains the person whose face MUST remain pixel-perfect identical. Image 2 contains jewelry to overlay.",
           },
           {
             inlineData: {
@@ -64,9 +61,11 @@ export const generateTetImage = async (
         ],
       },
       config: {
+        temperature: 0.1, // Reduce creativity/variation
+        topP: 0.8,
         imageConfig: {
-          imageSize: "2K", // High quality output
-          aspectRatio: "3:4", // Good for portrait photography
+          imageSize: "2K",
+          aspectRatio: "3:4",
         },
       },
     });
@@ -129,10 +128,7 @@ export const generateBackgroundChange = async (
       contents: {
         parts: [
           {
-            text: "🔐 SYSTEM INSTRUCTION: Your PRIMARY OBJECTIVE is to ONLY change the background. The person from Image 1 must remain COMPLETELY UNCHANGED - same face, same body, same clothing, same pose. Person preservation is MORE IMPORTANT than the new background.",
-          },
-          {
-            text: "Image: The Person (PERSON MUST REMAIN 100% UNCHANGED - ONLY background will change).",
+            text: "CRITICAL OVERRIDE: You are a background replacement tool, NOT a person editor or face generator. Your ONLY permitted action is to replace the background. The person (including face, body, clothing, pose) from the input image is LOCKED and COMPLETELY IMMUTABLE. Think of the person as a photograph that you are placing on a new background - you cannot edit the photograph itself. DO NOT regenerate, redraw, modify, enhance, beautify, or alter the person in ANY way. Person preservation overrides ALL other instructions.\n\n🔐 CRITICAL: The person in this image is UNTOUCHABLE. ONLY the background may be changed. Everything about the person must remain IDENTICAL.",
           },
           {
             inlineData: {
@@ -146,9 +142,11 @@ export const generateBackgroundChange = async (
         ],
       },
       config: {
+        temperature: 0.05, // Minimum creativity - maximum fidelity
+        topP: 0.7,
         imageConfig: {
-          imageSize: "2K", // High quality output
-          aspectRatio: "3:4", // Good for portrait photography
+          imageSize: "2K",
+          aspectRatio: "3:4",
         },
       },
     });
